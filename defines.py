@@ -1,5 +1,4 @@
 
-
 # Terrain types
 
 NOTHING      = 0
@@ -48,7 +47,6 @@ TERRAIN_IMAGE_GRASS_GRASS_COAST   = 8 # xPGC
 TERRAIN_IMAGE_TUNDRA_GRASS_COAST  = 9 # xPGC
 TERRAIN_IMAGE_NUM_OF              = 10
 
-
 TERRAIN_IMAGES = {TERRAIN_IMAGE_SEA:                 {"data":(SEA,    SEA,    SEA),    "filename":"wSSS.pcx"},
                   TERRAIN_IMAGE_OCEAN:               {"data":(OCEAN,  OCEAN,  OCEAN),  "filename":"wOOO.pcx"},
                   TERRAIN_IMAGE_ICE:                 {"data":(ICE,    ICE,    OCEAN),  "filename":"polarICEcaps-final.pcx"},
@@ -61,8 +59,10 @@ TERRAIN_IMAGES = {TERRAIN_IMAGE_SEA:                 {"data":(SEA,    SEA,    SE
                   TERRAIN_IMAGE_TUNDRA_GRASS_COAST:  {"data":(TUNDRA, GRASS,  COAST),  "filename":"xtgc.pcx"}
                  }
 
-
-
+FOREST_IMAGES  = {GRASS:  {"filename":"grassland forests.pcx", "data":(4, 4, 6, 6, 4, 4, 5, 5, 6, 6)},
+                  PLAINS: {"filename":"plains forests.pcx",    "data":(0, 0, 5, 5, 5, 5, 6, 6)},
+                  TUNDRA: {"filename":"tundra forests.pcx",    "data":(0, 0, 4, 4, 5, 5, 6, 6)}
+                 }
 
 ALPHA_NUM = 255
 TERRAIN_HEIGHT = 64

@@ -31,10 +31,11 @@ class Forest(Image):
 class ForestFeature:
     def __init__(self):
         self.Forests = NUM_TERRAINS*[None]
-        self.Forests[GRASS] = Forest(os.path.join("Art", "Terrain", "grassland forests.pcx"), (4, 4, 6, 6, 4, 4, 5, 5, 6, 6))
-        self.Forests[PLAINS] = Forest(os.path.join("Art", "Terrain", "plains forests.pcx"), (0, 0, 5, 5, 5, 5, 6, 6))
-        self.Forests[TUNDRA] = Forest(os.path.join("Art", "Terrain", "tundra forests.pcx"), (0, 0, 4, 4, 5, 5, 6, 6))
-        
+
+        for t in (GRASS, PLAINS, TUNDRA):
+            self.Forests[t] = Forest(os.path.join("Art", "Terrain", FOREST_IMAGES[t]["filename"]),
+                                     FOREST_IMAGES[t]["data"])
+
     def get_image(self, terrain_type, feature):
         if feature == JUNGLE or feature == FOREST:
             if self.Forests[terrain_type] is not None:
