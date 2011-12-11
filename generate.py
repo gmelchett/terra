@@ -306,6 +306,7 @@ class Generate:
 
 
     def draw(self):
+        pygame.init()
         pygame.display.set_mode((120*2, 80*2))
         surface = pygame.display.get_surface()
 
