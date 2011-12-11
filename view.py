@@ -24,29 +24,22 @@ class View:
             self.x = x
             self.y = y
             self.changed = True
-            print "location", self.x, self.y
-
     def left(self):
         if self.__verify(self.x-1, self.y):
             self.x -= 1
             self.changed = True
-            print "location", self.x, self.y
     def right(self):
         if self.__verify(self.x+1, self.y):
             self.x += 1
             self.changed = True
-            print "location", self.x, self.y
     def up(self):
         if self.__verify(self.x, self.y-1):
             self.y -= 1
             self.changed = True
-            print "location", self.x, self.y
     def down(self):
         if self.__verify(self.x, self.y+1):
             self.y += 1
             self.changed = True
-            print "location", self.x, self.y
-
     def update(self):
 
         if not self.changed:
