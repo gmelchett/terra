@@ -10,20 +10,19 @@ import feature
 
 from defines import *
 
+pygame.init()
 
 # Set running directory.
 if os.path.dirname( __file__ ):
     os.chdir( os.path.dirname( __file__ ) )
  
 
-pygame.init()
+w = world.World()
+w.new()
+
 pygame.display.set_caption("Map")
 window = pygame.display.set_mode((TERRAIN_WIDTH*12, TERRAIN_HEIGHT*14))
 screen = pygame.display.get_surface()
-
-
-w = world.World()
-w.new()
 
 t = terrain.Terrain()
 
