@@ -33,7 +33,7 @@ class Fractal:
             p = p + 1
         if self.terrain[self.__wrap(x)][yb] is not None:
             a = a + self.terrain[self.__wrap(x)][yb]
-            p = p +1
+            p = p + 1
 
         return self.__add_rand(a / p, rand)
 
@@ -74,8 +74,9 @@ class Fractal:
 
         self.terrain[0][0] = random.randint(0, 255)
         self.terrain[0][size - 1] = random.randint(0, 255)
-        self.terrain[size - 1][0] = random.randint(0, 255)
-        self.terrain[size - 1][size - 1] = random.randint(0, 255)
+        # Wrap east-west
+        self.terrain[size - 1][0] = self.terrain[0][0]
+        self.terrain[size - 1][size - 1] = self.terrain[0][size - 1]
 
         d = size - 1
         l = 1
