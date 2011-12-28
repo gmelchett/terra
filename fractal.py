@@ -12,50 +12,39 @@ class Fractal:
     def __add_rand(self, avg, rand):
         return max(0, min(255, avg + random.randint(-rand, rand)))
 
+    def __get(self, x, y, s, p):
+
+        if y < 0 or y >= self.size:
+            return s, p
+
+        if self.terrain[self.__wrap(x)][y] is not None:
+            return s + self.terrain[self.__wrap(x)][y], p + 1
+        else:
+            return s, p
+
     def __square_avg(self, x, y, d, rand):
-
-        xa = self.__wrap(x - d)
-        xb = self.__wrap(x + d)
-        ya = self.__wrap(y - d)
-        yb = self.__wrap(y + d)
-
-        a = 0
+        s = 0
         p = 0
 
-        if self.terrain[xa][self.__wrap(y)] is not None:
-            a = a + self.terrain[xa][self.__wrap(y)]
-            p = p + 1
-        if self.terrain[xb][self.__wrap(y)] is not None:
-            a = a + self.terrain[xb][self.__wrap(y)]
-            p = p + 1
-        if self.terrain[self.__wrap(x)][ya] is not None:
-            a = a + self.terrain[self.__wrap(x)][ya]
-            p = p + 1
-        if self.terrain[self.__wrap(x)][yb] is not None:
-            a = a + self.terrain[self.__wrap(x)][yb]
-            p = p + 1
+        s, p = self.__get(x - d, y, s, p)
+        s, p = self.__get(x + d, y, s, p)
+        s, p = self.__get(x, y + d, s, p)
+        s, p = self.__get(x, y - d, s, p)
 
-        return self.__add_rand(a / p, rand)
+        return self.__add_rand(s / p, rand)
 
     def __generate(self, x, y, d, rand):
 
         # diamond
-        a = 0
+        s = 0
         p = 0
-        if self.terrain[x][y] is not None:
-            a = a + self.terrain[x][y]
-            p = p + 1
-        if self.terrain[x + d][y] is not None:
-            a = a + self.terrain[x + d][y]
-            p = p +1
-        if self.terrain[x][y + d] is not None:
-            a = a + self.terrain[x][y + d]
-            p = p + 1
-        if self.terrain[x + d][y + d] is not None:
-            a = a + self.terrain[x + d][y + d]
-            p = p + 1
+        s, p = self.__get(x, y, s, p)
+        s, p = self.__get(x + d, y, s, p)
+        s, p = self.__get(x, y + d, s, p)
+        s, p = self.__get(x + d, y + d, s, p)
 
-        self.terrain[x + d / 2][y + d / 2] = self.__add_rand(a / p, rand)
+        self.terrain[x + d / 2][y + d / 2] = self.__add_rand(s / p, rand)
+
         # square
         self.terrain[x][y + d / 2] =  self.__square_avg(x, y + d/2, d / 2, rand)
         self.terrain[x + d][y + d / 2] =  self.__square_avg(x + d, y + d/2, d / 2, rand)
