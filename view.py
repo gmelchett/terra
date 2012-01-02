@@ -2,9 +2,31 @@
 import pygame
 from defines import *
 
+class Minimap:
+    # FIXME: Just a hack
+    def __init__(self, world, surface, x, y, size):
+        self.world = world
+        self.x = x
+        self.y = y
+        self.size = size
+        self.surface = surface
+
+    def update(self, x, y, w, h):
+
+        for iy in range(0, self.world.world.height):
+            for ix in range(0, self.world.world.width):
+                t = self.world.world.getTerrainType(ix, iy)
+                if t == OCEAN or t == SEA or t == COAST:
+                    self.surface.set_at((500+ix, 500+iy), (0,0,255))
+                else:
+                    self.surface.set_at((500+ix, 500+iy), (128,128,128))
+
+        pygame.draw.rect(self.surface, (255,255,255), pygame.Rect(x+500, y+500, w, h), 1)
+
+
 
 class View:
-    def __init__(self, world, terrain, feature, surface, tile_width, tile_height):
+    def __init__(self, world, terrain, feature, surface, tile_width, tile_height, minimap_x=-1, minimap_y=-1, minimap_size=-1):
         self.world = world
         self.terrain = terrain
         self.feature = feature
@@ -15,6 +37,9 @@ class View:
         self.surface = surface
         self.tile_width = tile_width
         self.tile_height = tile_height
+
+        # Minmap, no border.
+        self.minimap = Minimap(world, surface, minimap_x, minimap_y, minimap_size)
 
     def __verify(self, x, y):
         return x >=0 and x < (self.world.getWidth() - self.tile_width) and y >= 0 and y < (self.world.getHeight() - 2*self.tile_height)
@@ -85,6 +110,7 @@ class View:
                     self.surface.blit(image, (screen_x, screen_y))
                     
 
+        self.minimap.update(self.x, self.y, xstep, ystep)
 
         pygame.display.flip() 
 

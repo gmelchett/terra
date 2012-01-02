@@ -1,6 +1,10 @@
 
 import random
 
+import map
+from defines import *
+
+
 class Fractal:
     def __dump(self):
         if self.debug:
@@ -117,5 +121,71 @@ class Fractal:
         return self.size
     def getHistogram(self):
         return self.histogram
+
+class Generate:
+    # FIXME: Arguments does not match
+    def __init__(self, width, height, numcontinents, continentsize, seed=None):
+        if seed is not None:
+            random.seed(seed)
+        # FIXME: must be power of 2+1
+        self.Map = map.Map(width, width)
+
+    def generate(self):
+        Frac = Fractal(size=self.Map.width)
+
+
+        heights = Frac.getHistogram()
+        terrain = Frac.getTerrain()
+
+        current_height = 0
+        sea_level = None
+        land_level = None
+        tree_level = None
+        hill_level = None
+        mountain_level = None
+
+        for i in range(0, 256):
+            current_height = current_height + heights[i]
+            if current_height >= 80*sum(heights)/100 and sea_level is None:
+                sea_level = i
+        
+            if current_height >= 80*sum(heights)/100 and land_level is None:
+                land_level = i
+            if current_height >= 87*sum(heights)/100 and tree_level is None:
+                tree_level = i
+            if current_height >= 96*sum(heights)/100 and hill_level is None:
+                hill_level = i
+            if current_height >= 98*sum(heights)/100 and mountain_level is None:
+                mountain_level = i
+
+        for x in range(0, self.Map.width):
+            for y in range(0, self.Map.width):
+                if terrain[x][y] < sea_level:
+                    self.Map.setTerrainType(x, y, OCEAN)
+                elif terrain[x][y] < land_level:
+                    self.Map.setTerrainType(x, y, SEA)
+                elif terrain[x][y] < tree_level:
+                    self.Map.setTerrainType(x, y, GRASS)
+                elif terrain[x][y] < hill_level:
+                    self.Map.setTerrainType(x, y, GRASS)
+                    self.Map.setFeature(x, y, FOREST)
+                elif terrain[x][y] < mountain_level:
+                    self.Map.setTerrainType(x, y, GRASS)
+                else:
+                    self.Map.setTerrainType(x, y, GRASS)
+
+        self.Map.neighbourrules(ICE, (ICE, OCEAN), OCEAN)
+        self.Map.neighbourrules(GRASS, (GRASS, COAST), COAST)
+        self.Map.neighbourrules(COAST, (COAST, GRASS, SEA), SEA)
+        self.Map.neighbourrules(SEA, (COAST, SEA, OCEAN), COAST)
+
+        self.Map.neighbourrules(TUNDRA, (TUNDRA, COAST, GRASS), GRASS)
+        self.Map.neighbourrules(PLAINS, (PLAINS, DESERT, COAST, GRASS), GRASS)
+        self.Map.neighbourrules(DESERT, (DESERT, PLAINS, COAST, GRASS), GRASS)
+        self.Map.finalize()
+
+        return self.Map
+
+
 
 

@@ -1,6 +1,7 @@
 
 
-import generate
+#import generate
+import fractal
 import random
 from defines import *
 from terrainbitmap import *
@@ -17,7 +18,8 @@ class World:
         return self.world.getHeight()
 
     def new(self):
-        self.generator = generate.Generate(120, 80, 4, 12, seed = 0)
+        #self.generator = generate.Generate(120, 80, 4, 12, seed = 0)
+        self.generator = fractal.Generate(65, 65, 4, 12, seed = 1)
         self.world = self.generator.generate()
 
         # Create the bit maps needs to figure out which image that is witch.

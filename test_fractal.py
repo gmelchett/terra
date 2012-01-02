@@ -20,14 +20,18 @@ terrain = d.getTerrain()
 h = d.getHistogram()
 
 a = 0
-water_level = None
+sea_level = None
+land_level = None
 tree_level = None
 hill_level = None
 mountain_level = None
 for i in range(0, 256):
     a = a + h[i]
-    if a >= 80*sum(h)/100 and water_level is None:
-        water_level = i
+    if a >= 80*sum(h)/100 and sea_level is None:
+        sea_level = i
+
+    if a >= 80*sum(h)/100 and land_level is None:
+        land_level = i
     if a >= 87*sum(h)/100 and tree_level is None:
         tree_level = i
     if a >= 96*sum(h)/100 and hill_level is None:
@@ -48,8 +52,10 @@ surface.fill((255,0,0), ((0, 0), (s*2,s*2)))
 for x in range(0, s):
     for y in range(0, s):
         if 1:
-            if terrain[x][y] < water_level:
+	    if terrain[x][y] < sea_level:
                 c = (0, 0, 255)
+            elif terrain[x][y] < land_level:
+                c = (128, 0, 255)
             elif terrain[x][y] < tree_level:
                 c = (0, 255, 128)
             elif terrain[x][y] < hill_level:

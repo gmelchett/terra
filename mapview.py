@@ -30,7 +30,7 @@ f = feature.Feature()
 
 v = view.View(w, t, f, screen, 12, 14)
 
-v.locate(78,47)
+v.locate(10,10)
 v.update()
 
 pygame.display.flip() 
